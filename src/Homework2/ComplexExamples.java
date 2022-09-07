@@ -123,7 +123,7 @@ public class ComplexExamples {
                 .collect(groupingBy(Person::getName, Collectors.counting()));
         for (Map.Entry<String, Long> entry : mapToSort.entrySet()) {
             System.out.println("Key: " + entry.getKey());
-            System.out.println("Value: " + entry.getValue());
+            System.out.println("Value:" + entry.getValue());
         }
 
         /*
@@ -131,12 +131,12 @@ public class ComplexExamples {
 
             [3, 4, 2, 7], 10 -> [3, 7] - вывести пару менно в скобках, которые дают сумму - 10
          */
-
+        System.out.println("************************Task2**************************");
         int[] array = {3, 4, 2, 7};
         int number = 10;
         int start = 0;
         int end = array.length - 1;
-        int[] arrayFinal = {-1000, -1000};
+        int[] arrayFinal = {-number, -number};
         while (start < end) {
 
             Arrays.sort(array);
@@ -161,8 +161,8 @@ public class ComplexExamples {
         int[] arrayTest1 = {3, 7};
         assert (Arrays.equals(arrayFinal, arrayTest1));
 
-        if ( arrayFinal[0] == -1000 && arrayFinal[1] == -1000){
-            System.out.println("Array contains zero pairs");
+        if (arrayFinal[0] == -1000 && arrayFinal[1] == -1000) {
+            System.out.println("Пар удовлетворяющих условию нету");
         }
 
 
@@ -178,6 +178,7 @@ public class ComplexExamples {
                     fuzzySearch("cwheeel", "cartwheel"); // false
                     fuzzySearch("lw", "cartwheel"); // false
         */
+        System.out.println("***********************Task3***************************");
         System.out.println(fuzzySearch("car", "ca6$$#_rtwheel")); // true
         System.out.println(fuzzySearch("cwhl", "cartwheel")); // true
         System.out.println(fuzzySearch("cwhee", "cartwheel")); // true
@@ -214,10 +215,7 @@ public class ComplexExamples {
             }
         }
 
-        if (Arrays.equals(arrayCheck, arrayCurrentCheck)) {
-            return true;
-        }
-        return false;
+        return Arrays.equals(arrayCheck, arrayCurrentCheck);
     }
 
 }
