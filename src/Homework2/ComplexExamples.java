@@ -4,8 +4,10 @@ package Homework2;
 //import lombok.Setter;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -118,9 +120,13 @@ public class ComplexExamples {
                 Key: Jack
                 Value:1
          */
+
         Map<String, Long> mapToSort = Arrays.stream(RAW_DATA)
+                .filter(Person -> Objects.nonNull(Person.name))
                 .distinct()
+                .sorted(Comparator.comparingInt(Person::getId).thenComparing(Person::getName))
                 .collect(groupingBy(Person::getName, Collectors.counting()));
+
         for (Map.Entry<String, Long> entry : mapToSort.entrySet()) {
             System.out.println("Key: " + entry.getKey());
             System.out.println("Value:" + entry.getValue());
@@ -133,10 +139,15 @@ public class ComplexExamples {
          */
         System.out.println("************************Task2**************************");
         int[] array = {3, 4, 2, 7};
+        if (array == null) {
+            throw new IllegalArgumentException("Введите массив отличный от null");
+        }
         int number = 10;
         int start = 0;
         int end = array.length - 1;
         int[] arrayFinal = {-number, -number};
+
+
         while (start < end) {
 
             Arrays.sort(array);
@@ -161,11 +172,8 @@ public class ComplexExamples {
         int[] arrayTest1 = {3, 7};
         assert (Arrays.equals(arrayFinal, arrayTest1));
 
-        if (arrayFinal[0] == -1000 && arrayFinal[1] == -1000) {
-            System.out.println("Пар удовлетворяющих условию нету");
-        }
-
-
+        Predicate<int[]> p = wow -> arrayFinal[0] == -number && arrayFinal[1] == -number;
+        if (p.test(array)) System.out.println("Not such pair");
 
         /*
         Task3
@@ -185,37 +193,25 @@ public class ComplexExamples {
         System.out.println(fuzzySearch("cartwheel", "cartwheel")); // true
         System.out.println(fuzzySearch("cwheeel", "cartwheel")); // false
         System.out.println(fuzzySearch("lw", "cartwheel")); // false
-
     }
 
     private static Boolean fuzzySearch(String checkWord, String initialWord) {
-        char[] arrayInitial = initialWord.toCharArray();
-        int start = 0;
-        int end = arrayInitial.length - 1;
-        char[] arrayCheck = checkWord.toCharArray();
-        int startCheck = 0;
-        int endCheck = arrayCheck.length - 1;
-        char[] arrayCurrentCheck = new char[checkWord.toCharArray().length];
-
-        while (start <= end) {
-
-            if (arrayInitial[start] == arrayCheck[startCheck]) {
-                arrayCurrentCheck[startCheck] = arrayCheck[startCheck];
-                start++;
-                startCheck++;
-            } else {
-                start++;
-            }
-            if (arrayInitial[end] == arrayCheck[endCheck]) {
-                arrayCurrentCheck[endCheck] = arrayCheck[endCheck];
-                end--;
-                endCheck--;
-            } else {
-                end--;
+        if (checkWord == null || initialWord == null) {
+            throw new IllegalArgumentException("null не может быть принят в качества строки");
+        }
+        List<Character> checkList = IntStream.range(0, checkWord.length())
+                .mapToObj(checkWord::charAt)
+                .collect(Collectors.toList());
+        List<Character> initialList = IntStream.range(0, initialWord.length())
+                .mapToObj(initialWord::charAt)
+                .collect(Collectors.toList());
+        String word = "";
+        for (Character c : initialList) {
+            if (checkList.contains(c)) {
+                word = word.concat(String.valueOf(c));
             }
         }
-
-        return Arrays.equals(arrayCheck, arrayCurrentCheck);
+        return (word.contains(checkWord));
     }
 
 }
