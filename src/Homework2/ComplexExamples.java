@@ -123,8 +123,8 @@ public class ComplexExamples {
 
         Map<String, Long> mapToSort = Arrays.stream(RAW_DATA)
                 .filter(Person -> Objects.nonNull(Person.name))
-                .distinct()
                 .sorted(Comparator.comparingInt(Person::getId).thenComparing(Person::getName))
+                .distinct()
                 .collect(groupingBy(Person::getName, Collectors.counting()));
 
         for (Map.Entry<String, Long> entry : mapToSort.entrySet()) {
